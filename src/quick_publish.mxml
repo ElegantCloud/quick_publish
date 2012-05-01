@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<mx:VBox id="content">
+		<mx:HBox id="settingbar">
+			<s:Label>视频宽度（像素）</s:Label>
+			<s:TextInput id="txtIptVideoWidth">360</s:TextInput>
+			<s:Label>视频高度（像素）</s:Label>
+			<s:TextInput id="txtIptVideoHeight">270</s:TextInput>
+			<s:Label>帧率</s:Label>
+			<s:TextInput id="txtIptVideoFPS">10</s:TextInput>
+			<s:Label>质量（0-100）</s:Label>
+			<s:TextInput id="txtIptVideoQuality">90</s:TextInput>			
+		</mx:HBox>		
+		<mx:HBox id="toolbar">
+			<s:Label>服务器地址</s:Label>
+			<s:TextInput id="txtIpAddr">localhost</s:TextInput>
+			<s:Label>会议名称</s:Label>
+			<s:TextInput id="txtConfId">quick_server</s:TextInput>
+			<s:Label>用户名</s:Label>
+			<s:TextInput id="txtUserId">user</s:TextInput>
+			<s:TextInput id="txtPubType">record</s:TextInput>
+			<s:Button id="btnPub" click="publish()" enabled="true">Publish</s:Button>
+			<s:Button id="btnStop" click="disconnect()" enabled="false">Stop</s:Button>
+		</mx:HBox>		
+		<mx:HBox id="videobar">
+			<s:VideoDisplay id="lcoalVideoDisplay" width="360" height="270" />	
+		</mx:HBox>
+		<mx:VBox horizontalAlign="left">
+			<s:TextArea id="txtMessage" width="360" heightInLines="10"></s:TextArea>
+		</mx:VBox>
+	</mx:VBox>
+	<fx:Script source="com/richitec/publish.as" />
+	<fx:Script>
+		<![CDATA[
+				public function onBWDone(obj:Object):void
+				{
+					
+				}
+		]]>
+	</fx:Script>
+</s:Application>
