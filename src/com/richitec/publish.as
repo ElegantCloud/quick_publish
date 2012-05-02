@@ -8,7 +8,9 @@ import flash.media.Camera;
 import flash.media.H264Level;
 import flash.media.H264Profile;
 import flash.media.H264VideoStreamSettings;
+import flash.media.Microphone;
 import flash.media.Video;
+import flash.media.SoundCodec;
 import flash.net.NetConnection;
 import flash.net.NetStream;
 import flash.net.NetStreamPlayOptions;
@@ -18,9 +20,10 @@ import mx.collections.ArrayList;
 
 import spark.components.ButtonBar;
 import spark.components.VideoDisplay;
-import spark.events.IndexChangeEvent; 
+import spark.events.IndexChangeEvent;
 
 private var _camera:Camera = null;
+private var _mic:Microphone = null;
 
 private var _conn:NetConnection = null;
 private var _remoteStreamArray:Array = null;
@@ -66,10 +69,25 @@ private function publish():void{
 	} else {
 		trace("Cannot get any camera!");
 	}
+	
+	_mic = Microphone.getMicrophone();
+	if (_mic){
+		_mic.addEventListener(StatusEvent.STATUS, microphoneEventHandler);
+		_mic.setUseEchoSuppression(true);
+		_mic.codec = SoundCodec.SPEEX;
+		_mic.rate = 8;
+//		_mic.setLoopBack(true);
+	} else {
+		trace("Cannot get any microphone!");
+	}
 }
 
 private function cameraEventHandler(event:StatusEvent):void {
 	trace("Camera Event:" + event.code);
+}
+
+private function microphoneEventHandler(event:StatusEvent):void {
+	trace("Microphone Event:" + event.code);
 }
 
 private function connect():void {
@@ -103,6 +121,7 @@ private function connectSuccess():void {
 	localStream = new NetStream(_conn);
 	localStream.addEventListener(NetStatusEvent.NET_STATUS, eventHandler);
 	localStream.attachCamera(_camera);
+	localStream.attachAudio(_mic);
 	
 	var h264Settings:H264VideoStreamSettings = new H264VideoStreamSettings();
 	h264Settings.setProfileLevel(H264Profile.BASELINE, H264Level.LEVEL_3_1);
